@@ -4,6 +4,8 @@ var mapPins = map.querySelector('.map__pins');
 var similarPinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
+var similarCardTemplate = document.querySelector('#card')
+
 
 map.classList.remove('map--faded');
 
@@ -13,7 +15,7 @@ var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 var photosList = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var mapStartX = map.getBoundingClientRect().x;
-var mapEndX = map.getBoundingClientRect().x + map.getBoundingClientRect().width;
+var mapEndX = mapStartX + map.getBoundingClientRect().width;
 
 var getRandom = function (min, max) {
   return min + Math.floor((max - min) * Math.random());
