@@ -1,7 +1,7 @@
 'use strict';
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
-var similarPinTemplate = document. querySelector('#pin')
+var similarPinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
 
@@ -27,13 +27,13 @@ var getRandomListLength = function (list) {
   return list.slice(0, getRandom(0, list.length));
 };
 
-var checkinAndOut = getRandomItem(checkinTime);
-var pinLocation = {
-  x: getRandom(mapStartX, mapEndX),
-  y: getRandom(130, 630)
-};
-
 var createAd = function (index) {
+  var checkinAndOut = getRandomItem(checkinTime);
+  var pinLocation = {
+    x: getRandom(mapStartX, mapEndX),
+    y: getRandom(130, 630)
+  };
+
   return {
     author: {
       avatar: 'img/avatars/user0' + index + '.png'
@@ -55,27 +55,22 @@ var createAd = function (index) {
   };
 };
 
-var renderAd = function (adv) {
+var modifyAd = function (adv) {
   var pinElement = similarPinTemplate.cloneNode(true);
-  var pin = pinElement.querySelector('.map__pin');
   var img = pinElement.querySelector('img');
-  console.log(adv);
-  console.log(pinElement);
-  pin.style.left = adv.location.x + adv.getBoundingClientRect().width / 2 + 'px;';
-  pin.style.top = adv.location.y - adv.getBoundingClientRect().height + 'px;';
+  pinElement.style.left = adv.location.x - img.getAttribute('width') / 2 + 'px';
+  pinElement.style.top = adv.location.y - img.getAttribute('height') + 'px';
   img.src = adv.author.avatar;
-  img.alt = adv.author.title;
+  img.alt = adv.offer.title;
   return pinElement;
 };
 
-var createAds = function (min, max) {
+var renderAd = function (min, max) {
   var fragment = document.createDocumentFragment();
   for (var i = min; i <= max; i++) {
-    var advertising = createAd(i);
-    console.log('advertising' + advertising);
-    fragment.appendChild(renderAd(advertising));
+    fragment.appendChild(modifyAd(createAd(i)));
   }
-  return mapPins.appendChild(fragment);
+  mapPins.appendChild(fragment);
 };
 
-createAds(1, 8);
+renderAd(1, 8);
