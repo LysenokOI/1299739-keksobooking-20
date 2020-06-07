@@ -4,8 +4,6 @@ var mapPins = map.querySelector('.map__pins');
 var similarPinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
-var similarCardTemplate = document.querySelector('#card')
-
 
 map.classList.remove('map--faded');
 
