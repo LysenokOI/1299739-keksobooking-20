@@ -47,6 +47,12 @@ var getRandomList = function (list) {
   return newArray;
 };
 
+var removeFirstChild = function (container) {
+  while (container.firstElementChild) {
+    container.firstElementChild.remove();
+  }
+}
+
 var createAd = function (index) {
   var checkinAndOut = getRandomItem(checkinTime);
   var pinLocation = {
@@ -87,66 +93,55 @@ var generateAd = function (adv) {
 
 var generateCard = function (adv) {
   var card = similarCardTemplate.cloneNode(true);
-  var title = card.querySelector('.popup__title');
-  var address = card.querySelector('.popup__text--address');
-  var price = card.querySelector('.popup__text--price');
-  var appartmentType = card.querySelector('.popup__type');
-  var capacity = card.querySelector('.popup__text--capacity');
-  var time = card.querySelector('.popup__text--time');
-  var description = card.querySelector('.popup__description');
-  var photos = card.querySelector('.popup__photos');
-  var avatar = card.querySelector('.popup__avatar');
 
-  title.textContent = adv.offer.title;
-  address.textContent = adv.offer.address;
-  price.innerHTML = adv.offer.price + '&#x20bd' + '<span>/ночь</span>';
-  appartmentType.textContent = appartType[adv.offer.type];
-  capacity.textContent = adv.offer.rooms + ' комнаты для ' + adv.offer.guests;
-  time.textContent = 'Заезд после ' + adv.offer.checkin + ', выезд до ' + adv.offer.checkout;
+  card.querySelector('.popup__title').textContent = adv.offer.title;
+  card.querySelector('.popup__text--address').textContent = adv.offer.address;
+  card.querySelector('.popup__text--price').innerHTML = adv.offer.price + '&#x20bd' + '<span>/ночь</span>';
+  card.querySelector('.popup__type').textContent = appartType[adv.offer.type];
+  card.querySelector('.popup__text--capacity').textContent = adv.offer.rooms + ' комнаты для ' + adv.offer.guests;
+  card.querySelector('.popup__text--time').textContent = 'Заезд после ' + adv.offer.checkin + ', выезд до ' + adv.offer.checkout;
+  card.querySelector('.popup__description').textContent = adv.offer.description;
+  card.querySelector('.popup__avatar').src = adv.author.avatar;
 
   var cardFeatures = card.querySelector('.popup__features');
-  var featuresElements = cardFeatures.children;
+  var fragmentFeatures = document.createDocumentFragment();
+  var featuresTemplate = '<li class="popup__feature"></li>';
+  cardFeatures.innerHTML = featuresTemplate;
 
-  for (var featureElement = 0; featureElement < featuresElements.length; featureElement++) {
-    for (var featureName = 0; featureName < adv.offer.features.length; featureName++) {
-      if ( featuresElements[featureElement].classList.contains('popup__feature--' + adv.offer.features[featureName])) {
-        featuresElements[featureElement].textContent = adv.offer.features[featureName];
-      }
+  for (var i = 0; i < featuresList.length; i++) {
+    var featureElement = cardFeatures.querySelector('.popup__feature').cloneNode(true);
+    featureElement.classList.add('popup__feature--' + featuresList[i]);
+    if (adv.offer.features.includes(featuresList[i])) {
+      featureElement.textContent = featuresList[i];
+    } else {
+      featureElement.hidden = true;
     }
-    if (featuresElements[featureElement].textContent === '') {
-      featuresElements[featureElement].style.visibility = 'hidden';
-    }
+    fragmentFeatures.append(featureElement);
   }
+  removeFirstChild(cardFeatures);
+  cardFeatures.append(fragmentFeatures);
 
-  description.textContent = adv.offer.description;
-
+  var photos = card.querySelector('.popup__photos');
   var fragmentPhotos = document.createDocumentFragment();
+
   for (var photo = 0; photo < adv.offer.photos.length; photo++) {
     var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
     photoElement.src = adv.offer.photos[photo];
-    console.log(photoElement);
     fragmentPhotos.appendChild(photoElement);
   }
-  /*while (photos.firstElementChild) {
-    photos.firstElementChild.remove;
-  }*/
+  removeFirstChild(photos);
   photos.appendChild(fragmentPhotos);
 
-  avatar.src = adv.author.avatar;
-  console.log(card);
   return card;
 };
 
-
 var renderAds = function (index) {
   var fragmentAds = document.createDocumentFragment();
-  var fragmentCards = document.createDocumentFragment();
 
   fragmentAds.appendChild(generateAd(createAd(index)));
-  fragmentCards.appendChild(generateCard(createAd(index)));
 
   mapPins.appendChild(fragmentAds);
-  mapPins.insertAfter(fragmentCards);
+  mapPins.after(generateCard(createAd(index)));
   console.log(mapPins);
 };
 
