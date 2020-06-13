@@ -35,7 +35,7 @@ var getRandomItem = function (list) {
 };
 
 var getRandomList = function (list) {
-  var i = getRandom(1, list.length);
+  var i = getRandom(1, list.length+1);
   var j;
   var newArray = [];
 
