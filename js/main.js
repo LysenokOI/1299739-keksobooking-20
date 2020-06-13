@@ -124,9 +124,9 @@ var generateCard = function (adv) {
   var photos = card.querySelector('.popup__photos');
   var fragmentPhotos = document.createDocumentFragment();
 
-  for (var photo = 0; photo < adv.offer.photos.length; photo++) {
+  for (var i = 0; i < adv.offer.photos.length; i++) {
     var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
-    photoElement.src = adv.offer.photos[photo];
+    photoElement.src = adv.offer.photos[i];
     fragmentPhotos.appendChild(photoElement);
   }
   removeFirstChild(photos);
@@ -137,14 +137,10 @@ var generateCard = function (adv) {
 
 var renderAds = function (index) {
   var fragmentAds = document.createDocumentFragment();
-
   fragmentAds.appendChild(generateAd(createAd(index)));
-
   mapPins.appendChild(fragmentAds);
   mapPins.after(generateCard(createAd(index)));
-  console.log(mapPins);
 };
-
 
 for (var i = 1; i <= COUNT_ADS; i++) {
   renderAds(i);
