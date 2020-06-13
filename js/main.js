@@ -114,7 +114,7 @@ var generateCard = function (adv) {
     if (adv.offer.features.includes(featuresList[i])) {
       featureElement.textContent = featuresList[i];
     } else {
-      featureElement.hidden = true;
+      featureElement.style.display = 'none';
     }
     fragmentFeatures.append(featureElement);
   }
