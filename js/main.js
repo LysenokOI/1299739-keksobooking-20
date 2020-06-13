@@ -144,22 +144,20 @@ var renderAds = function (index) {
   renderAds(i);
 }*/
 
-map.classList.remove('map--faded');
+//map.classList.remove('map--faded');
 
 var setDisabled = function(item) {
   item.disabled = true;
 }
 
+var mapFilters = map.querySelectorAll('.map__filter');
 
-var mapFilters = map.querySelector('.map__filters');
-
-for (var i = 0; i <= mapFilters.length; i++) {
+for (var i = 0; i < mapFilters.length; i++) {
   setDisabled(mapFilters[i]); //ERROR
 }
 
 var adForm = document.querySelector('.ad-form');
 var adFieldsets = adForm.querySelectorAll('fieldset');
-console.log(adFieldsets);
-for (var i = 0; i <= adFieldsets.length; i++) {
+for (var i = 0; i < adFieldsets.length; i++) {
   setDisabled(adFieldsets[i]);
 }
