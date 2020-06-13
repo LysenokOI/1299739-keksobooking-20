@@ -10,8 +10,6 @@ var similarCardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
-map.classList.remove('map--faded');
-
 var appartType = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -114,7 +112,7 @@ var generateCard = function (adv) {
     if (adv.offer.features.includes(featuresList[i])) {
       featureElement.textContent = featuresList[i];
     } else {
-      featureElement.style.display = 'none';
+      featureElement.setAttribute('hidden', 'true');
     }
     fragmentFeatures.append(featureElement);
   }
@@ -139,9 +137,29 @@ var renderAds = function (index) {
   var fragmentAds = document.createDocumentFragment();
   fragmentAds.appendChild(generateAd(createAd(index)));
   mapPins.appendChild(fragmentAds);
-  mapPins.after(generateCard(createAd(index)));
+  //mapPins.after(generateCard(createAd(index)));
 };
 
-for (var i = 1; i <= COUNT_ADS; i++) {
+/*for (var i = 1; i <= COUNT_ADS; i++) {
   renderAds(i);
+}*/
+
+map.classList.remove('map--faded');
+
+var setDisabled = function(item) {
+  item.disabled = true;
+}
+
+
+var mapFilters = map.querySelector('.map__filters');
+
+for (var i = 0; i <= mapFilters.length; i++) {
+  setDisabled(mapFilters[i]); //ERROR
+}
+
+var adForm = document.querySelector('.ad-form');
+var adFieldsets = adForm.querySelectorAll('fieldset');
+console.log(adFieldsets);
+for (var i = 0; i <= adFieldsets.length; i++) {
+  setDisabled(adFieldsets[i]);
 }
