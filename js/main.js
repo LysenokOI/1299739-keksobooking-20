@@ -102,9 +102,9 @@ var generateCard = function (adv) {
   card.querySelector('.popup__avatar').src = adv.author.avatar;
 
   var cardFeatures = card.querySelector('.popup__features');
-  var fragmentFeatures = document.createDocumentFragment();
   var featuresTemplate = '<li class="popup__feature"></li>';
   cardFeatures.innerHTML = featuresTemplate;
+  var fragmentFeatures = document.createDocumentFragment();
 
   for (var i = 0; i < featuresList.length; i++) {
     var featureElement = cardFeatures.querySelector('.popup__feature').cloneNode(true);
@@ -112,7 +112,7 @@ var generateCard = function (adv) {
     if (adv.offer.features.includes(featuresList[i])) {
       featureElement.textContent = featuresList[i];
     } else {
-      featureElement.setAttribute('hidden', 'true');
+      featureElement.style.display = 'none';
     }
     fragmentFeatures.append(featureElement);
   }
@@ -144,20 +144,80 @@ var renderAds = function (index) {
   renderAds(i);
 }*/
 
-//map.classList.remove('map--faded');
-
-var setDisabled = function(item) {
-  item.disabled = true;
-}
-
-var mapFilters = map.querySelectorAll('.map__filter');
-
+/*var mapFilters = map.querySelectorAll('.map__filter');
 for (var i = 0; i < mapFilters.length; i++) {
-  setDisabled(mapFilters[i]); //ERROR
-}
+  setDisabled(mapFilters[i]);
+}*/
 
+var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
-var adFieldsets = adForm.querySelectorAll('fieldset');
-for (var i = 0; i < adFieldsets.length; i++) {
-  setDisabled(adFieldsets[i]);
-}
+var activationForms = [mapFilter, adForm];
+
+var setDisableForms = function (item, status) {
+  Array.prototype.forEach.call(item.children, function (element) {
+    element.disabled = status;
+  });
+};
+
+var setPageStatus = function (status) {
+  if (status) {
+    map.classList.remove('map--faded');
+    activationForms.forEach(function (element) {
+      setDisableForms(element, false)
+    });
+  } else {
+    activationForms.forEach(function (element) {
+      setDisableForms(element, true)
+    });
+  }
+};
+
+setPageStatus(false);
+
+var mapPinMain = map.querySelector('.map__pin--main');
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    setPageStatus(true);
+  }
+});
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    evt.preventDefault();
+    setPageStatus(true);
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clintY
+    }
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove );
+    document.addEventListener('mouseup', onMouseUp);
+  }
+});
+
+
