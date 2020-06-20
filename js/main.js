@@ -51,7 +51,7 @@ var removeFirstChild = function (container) {
   }
 }
 
-var createAd = function (index) {
+var createAdv = function (index) {
   var checkinAndOut = getRandomItem(checkinTime);
   var pinLocation = {
     x: getRandom(mapStartX, mapEndX),
@@ -79,7 +79,7 @@ var createAd = function (index) {
   };
 };
 
-var generateAd = function (adv) {
+var renderPin = function (adv) {
   var pin = similarPinTemplate.cloneNode(true);
   var img = pin.querySelector('img');
   pin.style.left = adv.location.x - img.getAttribute('width') / 2 + 'px';
@@ -89,7 +89,7 @@ var generateAd = function (adv) {
   return pin;
 };
 
-var generateCard = function (adv) {
+var renderCard = function (adv) {
   var card = similarCardTemplate.cloneNode(true);
 
   card.querySelector('.popup__title').textContent = adv.offer.title;
@@ -102,20 +102,15 @@ var generateCard = function (adv) {
   card.querySelector('.popup__avatar').src = adv.author.avatar;
 
   var cardFeatures = card.querySelector('.popup__features');
-  var featuresTemplate = '<li class="popup__feature"></li>';
-  cardFeatures.innerHTML = featuresTemplate;
   var fragmentFeatures = document.createDocumentFragment();
 
-  for (var i = 0; i < featuresList.length; i++) {
-    var featureElement = cardFeatures.querySelector('.popup__feature').cloneNode(true);
-    featureElement.classList.add('popup__feature--' + featuresList[i]);
-    if (adv.offer.features.includes(featuresList[i])) {
-      featureElement.textContent = featuresList[i];
-    } else {
-      featureElement.style.display = 'none';
-    }
+  for (var i = 0; i < adv.offer.features.length; i++) {
+    var featureElement = document.createElement('li');
+    featureElement.classList.add('popup__feature', 'popup__feature--' + adv.offer.features[i]);
+    featureElement.textContent = featuresList[i];
     fragmentFeatures.append(featureElement);
   }
+
   removeFirstChild(cardFeatures);
   cardFeatures.append(fragmentFeatures);
 
@@ -133,21 +128,19 @@ var generateCard = function (adv) {
   return card;
 };
 
-var renderAds = function (index) {
-  var fragmentAds = document.createDocumentFragment();
-  fragmentAds.appendChild(generateAd(createAd(index)));
-  mapPins.appendChild(fragmentAds);
-  //mapPins.after(generateCard(createAd(index)));
-};
+var advList = [];
 
-/*for (var i = 1; i <= COUNT_ADS; i++) {
-  renderAds(i);
-}*/
+var fragmentPins = document.createDocumentFragment();
+for (var i = 1; i <= COUNT_ADS; i++) {
+  var adv = createAdv(i)
+  advList.push(adv);
+  fragmentPins.appendChild(renderPin(adv));
+}
 
-/*var mapFilters = map.querySelectorAll('.map__filter');
-for (var i = 0; i < mapFilters.length; i++) {
-  setDisabled(mapFilters[i]);
-}*/
+mapPins.appendChild(fragmentPins);
+
+mapPins.after(renderCard(advList[0]));
+
 
 var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
