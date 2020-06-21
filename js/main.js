@@ -1,5 +1,9 @@
 'use strict';
 var COUNT_ADS = 8;
+var MAP_SIZE_VERT = {
+  min: 130,
+  max: 630
+}
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 var similarPinTemplate = document.querySelector('#pin')
@@ -22,7 +26,7 @@ var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 var photosList = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var mapStartX = map.getBoundingClientRect().x;
-var mapEndX = mapStartX + map.getBoundingClientRect().width;
+var mapEndX = map.getBoundingClientRect().width;
 
 var getRandom = function (min, max) {
   return min + Math.floor((max - min) * Math.random());
@@ -55,7 +59,7 @@ var createAdv = function (index) {
   var checkinAndOut = getRandomItem(checkinTime);
   var pinLocation = {
     x: getRandom(mapStartX, mapEndX),
-    y: getRandom(130, 630)
+    y: getRandom(MAP_SIZE_VERT.min, MAP_SIZE_VERT.max)
   };
 
   return {
@@ -82,7 +86,7 @@ var createAdv = function (index) {
 var renderPin = function (adv) {
   var pin = similarPinTemplate.cloneNode(true);
   var img = pin.querySelector('img');
-  pin.style.left = adv.location.x - img.getAttribute('width') / 2 + 'px';
+  pin.style.left = adv.location.x + img.getAttribute('width') / 2 + 'px';
   pin.style.top = adv.location.y - img.getAttribute('height') + 'px';
   img.src = adv.author.avatar;
   img.alt = adv.offer.title;
@@ -169,14 +173,6 @@ setPageStatus(false);
 
 var mapPinMain = map.querySelector('.map__pin--main');
 
-var getCoords = function (elem) {
-  var box = elem.getBoundingClientRect();
-  return {
-    top: box.top + + pageYOffset,
-    left: box.left + pageXOffset
-  };
-};
-
 var pinMainCenterX = mapPinMain.getBoundingClientRect().width/2;
 var pinMainCenterY = mapPinMain.getBoundingClientRect().height/2;
 var mainPinCoords = {
@@ -197,11 +193,15 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-var pinMainAfter = window.getComputedStyle(mapPinMain, ':after');
+var getAfterHeight = function (elem) {
+  var afterElem =  window.getComputedStyle(elem, ':after');
+  return Number(afterElem.height.split('px', 1));
+}
+
 var getPinSize = function() {
   return {
     width: mapPinMain.getBoundingClientRect().width,
-    height: mapPinMain.getBoundingClientRect().height + Number(pinMainAfter.height.split('px', 1))
+    height: mapPinMain.getBoundingClientRect().height + getAfterHeight(mapPinMain)
   };
 };
 
@@ -237,11 +237,11 @@ mapPinMain.addEventListener('mousedown', function (evt) {
       }
 
       var checkPinCoords = function () {
-        if (pinMouseCoords().y < 130) {
-          mapPinMain.style.top = 130 + 'px'
+        if (pinMouseCoords().y < MAP_SIZE_VERT.min) {
+          mapPinMain.style.top = MAP_SIZE_VERT.min + 'px'
         }
-        if (pinMouseCoords().y > 630) {
-          mapPinMain.style.top = 630 + 'px';
+        if (pinMouseCoords().y > MAP_SIZE_VERT.max) {
+          mapPinMain.style.top = MAP_SIZE_VERT.max + 'px';
         }
         if (pinMouseCoords().x < - getPinSize().width/2 ) {
           mapPinMain.style.left = - getPinSize().width/2 + 'px';
@@ -274,5 +274,33 @@ mapPinMain.addEventListener('mousedown', function (evt) {
     document.addEventListener('mouseup', onMouseUp);
   }
 });
+
+
+adForm.action = 'https://javascript.pages.academy/keksobooking';
+var titleInput = adForm.querySelector('#title');
+/*titleInput.required = true;
+titleInput.minLength = 30;
+titleInput.maxLength = 100;
+*/
+var roomNumberInput = adForm.querySelector('#room_number');
+var capacityInput = adForm.querySelector('#capacity');
+
+var capacityCheck = function () {
+  if (roomNumberInput.value === '100' && capacityInput.value !== '0') {
+    capacityInput.setCustomValidity('Не для гостей');
+  } else if (capacityInput.value === '0' && roomNumberInput.value !== '100') {
+    roomNumberInput.setCustomValidity('Выберите 100 комнат');
+  } else if (roomNumberInput.value < capacityInput.value) {
+    capacityInput.setCustomValidity('Не больше ' + roomNumberInput.value + ' гостей');
+  } else {
+    capacityInput.setCustomValidity('');
+    roomNumberInput.setCustomValidity('');
+  }
+};
+
+capacityCheck();
+
+roomNumberInput.addEventListener('change', capacityCheck);
+capacityInput.addEventListener('change', capacityCheck);
 
 
