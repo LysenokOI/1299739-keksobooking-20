@@ -132,19 +132,22 @@ var renderCard = function (adv) {
   return card;
 };
 
-var advList = [];
+var renderPins = function () {
+  var advList = [];
 
-var fragmentPins = document.createDocumentFragment();
-for (var i = 1; i <= COUNT_ADS; i++) {
-  var adv = createAdv(i)
-  advList.push(adv);
-  fragmentPins.appendChild(renderPin(adv));
+  var fragmentPins = document.createDocumentFragment();
+  for (var i = 1; i <= COUNT_ADS; i++) {
+    var adv = createAdv(i)
+    advList.push(adv);
+    fragmentPins.appendChild(renderPin(adv));
+  }
+
+  mapPins.appendChild(fragmentPins);
+
+  mapPins.after(renderCard(advList[0]));
 }
 
-mapPins.appendChild(fragmentPins);
-
-mapPins.after(renderCard(advList[0]));
-
+renderPins();
 
 var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
