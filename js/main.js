@@ -302,5 +302,3 @@ capacityCheck();
 
 roomNumberInput.addEventListener('change', capacityCheck);
 capacityInput.addEventListener('change', capacityCheck);
-
-
