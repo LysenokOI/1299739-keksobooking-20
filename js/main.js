@@ -132,22 +132,19 @@ var renderCard = function (adv) {
   return card;
 };
 
+var advList = [];
 var renderPins = function () {
-  var advList = [];
-
-  var fragmentPins = document.createDocumentFragment();
-  for (var i = 1; i <= COUNT_ADS; i++) {
-    var adv = createAdv(i)
-    advList.push(adv);
-    fragmentPins.appendChild(renderPin(adv));
+  if (advList.length < COUNT_ADS) {
+    var fragmentPins = document.createDocumentFragment();
+    for (var i = 1; i <= COUNT_ADS; i++) {
+      var adv = createAdv(i)
+      advList.push(adv);
+      fragmentPins.appendChild(renderPin(adv));
+    }
+    mapPins.appendChild(fragmentPins);
+    mapPins.after(renderCard(advList[0]));
   }
-
-  mapPins.appendChild(fragmentPins);
-
-  mapPins.after(renderCard(advList[0]));
 }
-
-renderPins();
 
 var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
@@ -162,6 +159,8 @@ var setDisableForms = function (item, status) {
 var setPageStatus = function (status) {
   if (status) {
     map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    renderPins();
   }
   activationForms.forEach(function (element) {
     if (status) {
@@ -211,6 +210,7 @@ var getPinSize = function() {
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     evt.preventDefault();
+
     setPageStatus(true);
 
     var startCoords = {
