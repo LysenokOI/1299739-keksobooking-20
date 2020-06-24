@@ -175,12 +175,27 @@ setPageStatus(false);
 
 var mapPinMain = map.querySelector('.map__pin--main');
 
-var pinMainCenterX = mapPinMain.getBoundingClientRect().width/2;
-var pinMainCenterY = mapPinMain.getBoundingClientRect().height/2;
-var mainPinCoords = {
-  x: Math.round(mapPinMain.offsetLeft + pinMainCenterX),
-  y: Math.round(mapPinMain.offsetTop + pinMainCenterY)
+var getAfterHeight = function (elem) {
+  var afterElem =  window.getComputedStyle(elem, ':after');
+  return Number(afterElem.height.split('px', 1));
 }
+
+var getPinSize = function(elem) {
+  return {
+    width: elem.getBoundingClientRect().width,
+    centerX: elem.getBoundingClientRect().width/2,
+    height: elem.getBoundingClientRect().height + getAfterHeight(elem)
+  };
+};
+
+var mainPinSize = getPinSize(mapPinMain);
+console.log(mainPinSize)
+
+var mainPinCoords = {
+  x: Math.round(mapPinMain.offsetLeft + mainPinSize.centerX),
+  y: Math.round(mapPinMain.offsetTop + mainPinSize.centerX)
+}
+console.log(mainPinCoords);
 
 var adAddressInput = adForm.querySelector('#address');
 var setAddressInputValue = function (coords) {
@@ -194,18 +209,6 @@ mapPinMain.addEventListener('keydown', function (evt) {
     setPageStatus(true);
   }
 });
-
-var getAfterHeight = function (elem) {
-  var afterElem =  window.getComputedStyle(elem, ':after');
-  return Number(afterElem.height.split('px', 1));
-}
-
-var getPinSize = function() {
-  return {
-    width: mapPinMain.getBoundingClientRect().width,
-    height: mapPinMain.getBoundingClientRect().height + getAfterHeight(mapPinMain)
-  };
-};
 
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
@@ -243,25 +246,26 @@ mapPinMain.addEventListener('mousedown', function (evt) {
         if (pinMouseCoords().y < MAP_SIZE_VERT.min) {
           mapPinMain.style.top = MAP_SIZE_VERT.min + 'px'
         }
-        if (pinMouseCoords().y > MAP_SIZE_VERT.max) {
-          mapPinMain.style.top = MAP_SIZE_VERT.max + 'px';
+        var lowerMapBoundery = MAP_SIZE_VERT.max - mainPinSize.height;
+        if (pinMouseCoords().y > lowerMapBoundery) {
+          mapPinMain.style.top = lowerMapBoundery + 'px';
+
         }
-        if (pinMouseCoords().x < - getPinSize().width/2 ) {
-          mapPinMain.style.left = - getPinSize().width/2 + 'px';
+        if (pinMouseCoords().x < - mainPinSize.centerX ) {
+          mapPinMain.style.left = - mainPinSize.centerX + 'px';
         }
-        var mapRightBoundery = map.getBoundingClientRect().width - getPinSize().width/2;
+        var mapRightBoundery = mapEndX - mainPinSize.centerX;
         if (pinMouseCoords().x > mapRightBoundery) {
           mapPinMain.style.left = mapRightBoundery + 'px';
         }
       }();
 
-
       mapPinMain.style.left = pinMouseCoords().x + 'px';
       mapPinMain.style.top = pinMouseCoords().y + 'px';
 
       mainPinCoords = {
-        x: mapPinMain.offsetLeft + Math.round(getPinSize().width/2),
-        y: mapPinMain.offsetTop + getPinSize().height
+        x: mapPinMain.offsetLeft + Math.round(mainPinSize.centerX),
+        y: mapPinMain.offsetTop + mainPinSize.height
       }
 
       setAddressInputValue(mainPinCoords);
