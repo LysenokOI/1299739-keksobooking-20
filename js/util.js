@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.randomize = {
+  window.util = {
     getRandom: function (min, max) {
       return min + Math.floor((max - min) * Math.random());
     },
@@ -19,7 +19,11 @@
         newArray.push(list[i]);
       }
       return newArray;
-    }
+    },
+    setDisableForms: function (item, status) {
+      Array.prototype.forEach.call(item.children, function (element) {
+        element.disabled = status;
+      });
+    },
   }
 })();
-

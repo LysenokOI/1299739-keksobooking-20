@@ -14,11 +14,11 @@
   window.data = {
     appartType: appartType,
     featuresList: featuresList,
-    createAdv: function (index) {
-      var checkinAndOut = window.randomize.getRandomItem(checkinTime);
+    createAdv: function (index, area) {
+      var checkinAndOut = window.util.getRandomItem(checkinTime);
       var pinLocation = {
-        x: window.randomize.getRandom(window.mapSize.mapStartX, window.mapSize.mapEndX),
-        y: window.randomize.getRandom(window.mapSize.MAP_SIZE_VERT.min, window.mapSize.MAP_SIZE_VERT.max)
+        x: window.util.getRandom(area.getBoundingClientRect().x, area.getBoundingClientRect().width),
+        y: window.util.getRandom(window.mapSize.MAP_SIZE_VERT.min, window.mapSize.MAP_SIZE_VERT.max)
       };
 
       return {
@@ -28,15 +28,15 @@
         offer: {
           title: 'Header',
           address: pinLocation.x + ', ' + pinLocation.y,
-          price: window.randomize.getRandom(1500, 4800),
-          type: window.randomize.getRandomItem(Object.keys(appartType)),
-          rooms: window.randomize.getRandom(2, 4),
-          guests: window.randomize.getRandom(2, 6),
+          price: window.util.getRandom(1500, 4800),
+          type: window.util.getRandomItem(Object.keys(appartType)),
+          rooms: window.util.getRandom(2, 4),
+          guests: window.util.getRandom(2, 6),
           checkin: checkinAndOut,
           checkout: checkinAndOut,
-          features: window.randomize.getRandomList(featuresList),
+          features: window.util.getRandomList(featuresList),
           description: 'Appartments description',
-          photos: window.randomize.getRandomList(photosList)
+          photos: window.util.getRandomList(photosList)
         },
         location: pinLocation
       };

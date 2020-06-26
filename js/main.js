@@ -1,14 +1,16 @@
 'use strict';
 var COUNT_ADS = 8;
 
-var mapPins = window.mapSize.map.querySelector('.map__pins');
+var map = document.querySelector('.map');
+var mapPins = map.querySelector('.map__pins');
+
 
 var advList = [];
 var renderPins = function () {
   if (advList.length < COUNT_ADS) {
     var fragmentPins = document.createDocumentFragment();
     for (var i = 1; i <= COUNT_ADS; i++) {
-      var adv = window.data.createAdv(i);
+      var adv = window.data.createAdv(i, map);
       advList.push(adv);
       fragmentPins.appendChild(window.pin.renderPin(adv));
     }
@@ -17,34 +19,29 @@ var renderPins = function () {
   }
 };
 
-var mapFilter = window.mapSize.map.querySelector('.map__filters');
+var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
 var activationForms = [mapFilter, adForm];
 
-var setDisableForms = function (item, status) {
-  Array.prototype.forEach.call(item.children, function (element) {
-    element.disabled = status;
-  });
-};
 
 var setPageStatus = function (status) {
   if (status) {
-    window.mapSize.map.classList.remove('map--faded');
+    map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     renderPins();
   }
   activationForms.forEach(function (element) {
     if (status) {
-      setDisableForms(element, !status);
+      window.util.setDisableForms(element, !status);
     } else {
-      setDisableForms(element, !status);
+      window.util.setDisableForms(element, !status);
     }
   });
 };
 
 setPageStatus(false);
 
-var mapPinMain = window.mapSize.map.querySelector('.map__pin--main');
+var mapPinMain = map.querySelector('.map__pin--main');
 
 var mainPinSize = window.pinSize.getPinSize(mapPinMain);
 
@@ -152,6 +149,5 @@ var roomNumberInput = adForm.querySelector('#room_number');
 var capacityInput = adForm.querySelector('#capacity');
 
 var roomCheck = window.form.capacityCheck(capacityInput, roomNumberInput);
-window.form.capacityCheck(capacityInput, roomNumberInput);
 roomNumberInput.addEventListener('change', roomCheck);
 capacityInput.addEventListener('change', roomCheck);
