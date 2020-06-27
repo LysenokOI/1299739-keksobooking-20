@@ -51,11 +51,8 @@ var mainPinCoords = {
 };
 
 var adAddressInput = adForm.querySelector('#address');
-var setAddressInputValue = function (coords) {
-  adAddressInput.value = coords.x + ', ' + coords.y;
-};
 
-setAddressInputValue(mainPinCoords);
+window.form.setAddressInputValue(adAddressInput, mainPinCoords);
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
@@ -123,7 +120,7 @@ mapPinMain.addEventListener('mousedown', function (evt) {
         y: mapPinMain.offsetTop + mainPinSize.height
       };
 
-      setAddressInputValue(mainPinCoords);
+      window.form.setAddressInputValue(adAddressInput, mainPinCoords);
     };
 
     var onMouseUp = function (upEvt) {
@@ -148,6 +145,10 @@ var roomNumberInput = adForm.querySelector('#room_number');
 
 var capacityInput = adForm.querySelector('#capacity');
 
-var roomCheck = window.form.capacityCheck(capacityInput, roomNumberInput);
-roomNumberInput.addEventListener('change', roomCheck);
-capacityInput.addEventListener('change', roomCheck);
+window.form.capacityCheck(capacityInput, roomNumberInput);
+roomNumberInput.addEventListener('change', function () {
+  window.form.capacityCheck(capacityInput, roomNumberInput);
+});
+capacityInput.addEventListener('change', function () {
+  window.form.capacityCheck(capacityInput, roomNumberInput);
+});

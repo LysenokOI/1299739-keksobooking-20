@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+
+
+  var setAddressInputValue = function (addressForm, coords) {
+    addressForm.value = coords.x + ', ' + coords.y;
+  };
+
   var capacityCheck = function (capacity, roomNumber) {
     console.log(roomNumber.value);
     console.log(capacity.value);
@@ -17,6 +23,7 @@
   };
 
   window.form = {
-    capacityCheck: capacityCheck
+    capacityCheck: capacityCheck,
+    setAddressInputValue: setAddressInputValue
   };
 })();
