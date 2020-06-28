@@ -4,7 +4,6 @@ var COUNT_ADS = 8;
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 
-
 var advList = [];
 var renderPins = function () {
   if (advList.length < COUNT_ADS) {
@@ -22,7 +21,6 @@ var renderPins = function () {
 var mapFilter = map.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
 var activationForms = [mapFilter, adForm];
-
 
 var setPageStatus = function (status) {
   if (status) {
@@ -42,7 +40,6 @@ var setPageStatus = function (status) {
 setPageStatus(false);
 
 var mapPinMain = map.querySelector('.map__pin--main');
-
 var mainPinSize = window.pinSize.getPinSize(mapPinMain);
 
 var mainPinCoords = {
@@ -134,21 +131,32 @@ mapPinMain.addEventListener('mousedown', function (evt) {
   }
 });
 
-
 adForm.action = 'https://javascript.pages.academy/keksobooking';
 var titleInput = adForm.querySelector('#title');
-/*titleInput.required = true;
-titleInput.minLength = 30;
-titleInput.maxLength = 100;
-*/
-var roomNumberInput = adForm.querySelector('#room_number');
 
+window.form.titleCheck(titleInput);
+
+var typeInput = adForm.querySelector('#type');
+var priceInput = adForm.querySelector('#price');
+
+adAddressInput.readOnly = true;
+
+window.form.priceInputCheck(priceInput);
+window.form.appartPriceCheck(typeInput, priceInput);
+
+var roomNumberInput = adForm.querySelector('#room_number');
 var capacityInput = adForm.querySelector('#capacity');
 
-window.form.capacityCheck(capacityInput, roomNumberInput);
-roomNumberInput.addEventListener('change', function () {
-  window.form.capacityCheck(capacityInput, roomNumberInput);
-});
-capacityInput.addEventListener('change', function () {
-  window.form.capacityCheck(capacityInput, roomNumberInput);
-});
+window.form.roomCapacityCheck(capacityInput, roomNumberInput);
+
+var checkinInput = adForm.querySelector('#timein');
+var checkoutInput = adForm.querySelector('#timeout');
+
+window.form.setCheckinTime(checkinInput, checkoutInput);
+
+var avatarInput = adForm.querySelector('#avatar');
+avatarInput.accept = '.jpg, .jpeg, .png';
+
+var photosInput = adForm.querySelector('#images');
+photosInput.multiple = true;
+photosInput.accept = '.jpg, .jpeg, .png';
