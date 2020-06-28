@@ -63,12 +63,30 @@
     });
   };
 
+  var mainPinSize = window.pin.getPinSize(window.elements.mapPinMain);
+  var mainPinCoords = {
+    x: Math.round(window.elements.mapPinMain.offsetLeft + mainPinSize.centerX),
+    y: Math.round(window.elements.mapPinMain.offsetTop + mainPinSize.centerX)
+  };
+
+  window.elements.adAddressInput.readOnly = true;
+  setAddressInputValue(window.elements.adAddressInput, mainPinCoords);
+
+  window.elements.adForm.action = 'https://javascript.pages.academy/keksobooking';
+
+  titleCheck(window.elements.titleInput);
+  priceInputCheck(window.elements.priceInput);
+  appartPriceCheck(window.elements.typeInput, window.elements.priceInput);
+  roomCapacityCheck(window.elements.capacityInput, window.elements.roomNumberInput);
+  setCheckinTime(window.elements.checkinInput, window.elements.checkoutInput);
+
+  window.elements.avatarInput.accept = '.jpg, .jpeg, .png';
+  window.elements.photosInput.multiple = true;
+  window.elements.photosInput.accept = '.jpg, .jpeg, .png';
+
   window.form = {
-    roomCapacityCheck: roomCapacityCheck,
     setAddressInputValue: setAddressInputValue,
-    titleCheck: titleCheck,
-    appartPriceCheck: appartPriceCheck,
-    priceInputCheck: priceInputCheck,
-    setCheckinTime: setCheckinTime
+    mainPinCoords: mainPinCoords,
+    mainPinSize: mainPinSize
   };
 })();
