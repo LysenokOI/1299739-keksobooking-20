@@ -30,8 +30,6 @@
     return pin;
   };
 
-  var mapPinsContainer = window.elements.map.querySelector('.map__pins');
-
   var advList = [];
   var renderPins = function () {
     if (advList.length < COUNT_ADS) {
@@ -41,8 +39,7 @@
         advList.push(adv);
         fragmentPins.appendChild(window.pin.renderPin(adv));
       }
-      mapPinsContainer.appendChild(fragmentPins);
-      mapPinsContainer.after(window.card.renderCard(advList[0]));
+      window.elements.mapPinsContainer.appendChild(fragmentPins);
     }
   };
 

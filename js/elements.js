@@ -15,6 +15,7 @@
   var checkoutInput = adForm.querySelector('#timeout');
   var avatarInput = adForm.querySelector('#avatar');
   var photosInput = adForm.querySelector('#images');
+  var mapPinsContainer = map.querySelector('.map__pins');
 
   window.elements = {
     map: map,
@@ -30,6 +31,7 @@
     checkinInput: checkinInput,
     checkoutInput: checkoutInput,
     avatarInput: avatarInput,
-    photosInput: photosInput
+    photosInput: photosInput,
+    mapPinsContainer: mapPinsContainer
   };
 })();
