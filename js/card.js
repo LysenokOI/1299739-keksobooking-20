@@ -62,11 +62,10 @@
         window.elements.mapPinsContainer.after(createCard(window.pin.advList[window.util.getRandom(1, 6)]));
       }
     };
-
     window.elements.mapPinsContainer.addEventListener('click', pinListener);
-
   };
 
+  renderCard();
   window.card = {
     createCard: createCard,
     renderCard: renderCard

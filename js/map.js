@@ -8,7 +8,6 @@
       window.elements.map.classList.remove('map--faded');
       window.elements.adForm.classList.remove('ad-form--disabled');
       window.pin.renderPins();
-      window.card.renderCard();
     }
     activationForms.forEach(function (element) {
       if (status) {
