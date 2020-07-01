@@ -49,25 +49,29 @@
     return card;
   };
 
-  var renderCard = function () {
-    var pinListener = function (evt) {
-      if (
-        evt.target
-        && evt.target.matches('.map__pin:not(.map__pin--main)')
-      ) {
-        var oldCard = window.elements.map.querySelector('.map__card');
-        if (oldCard) {
-          oldCard.remove();
-        }
-        window.elements.mapPinsContainer.after(createCard(window.pin.advList[window.util.getRandom(1, 6)]));
-      }
-    };
-    window.elements.mapPinsContainer.addEventListener('click', pinListener);
+  var getIndex = function (elem) {
+    return [].slice.call(advPins).indexOf(elem);
   };
 
-  renderCard();
+  window.pin.renderPins();
+  var pinHandler = function (evt) {
+    if (evt.target.classList.value === 'map__pin') {
+      var index = getIndex(evt.target);
+    }
+    if (evt.target.parentElement.classList.value === 'map__pin') {
+      index = getIndex(evt.target.parentElement);
+    }
+    window.elements.mapPinsContainer.after(createCard(window.pin.advList[index]));
+  };
+
+  var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+  advPins.forEach(function (item) {
+    item.addEventListener('click', pinHandler);
+  });
+
   window.card = {
     createCard: createCard,
-    renderCard: renderCard
+    pinHandler: pinHandler
   };
 })();
