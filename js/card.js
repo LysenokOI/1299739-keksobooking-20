@@ -49,26 +49,23 @@
     return card;
   };
 
-  var getIndex = function (elem) {
-    return [].slice.call(advPins).indexOf(elem);
+  var getIndex = function (elem, list) {
+    return [].slice.call(list).indexOf(elem);
   };
 
-  window.pin.renderPins();
   var pinHandler = function (evt) {
+    var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
     if (evt.target.classList.value === 'map__pin') {
-      var index = getIndex(evt.target);
+      var index = getIndex(evt.target, advPins);
+      window.elements.mapPinsContainer.after(createCard(window.pin.advList[index]));
     }
     if (evt.target.parentElement.classList.value === 'map__pin') {
-      index = getIndex(evt.target.parentElement);
+      index = getIndex(evt.target.parentElement, advPins);
+      window.elements.mapPinsContainer.after(createCard(window.pin.advList[index]));
     }
-    window.elements.mapPinsContainer.after(createCard(window.pin.advList[index]));
   };
 
-  var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-  advPins.forEach(function (item) {
-    item.addEventListener('click', pinHandler);
-  });
+  window.elements.mapPinsContainer.addEventListener('click', pinHandler);
 
   window.card = {
     createCard: createCard,
