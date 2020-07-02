@@ -20,6 +20,6 @@
 
   setPageStatus(false);
   window.map = {
-    setPageStatus: setPageStatus
+    setPageStatus: setPageStatus,
   };
 })();

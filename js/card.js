@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var similarCardTemplate = document.querySelector('#card')
+
+  var card = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
@@ -11,8 +12,7 @@
     }
   };
   var createCard = function (adv) {
-    var card = similarCardTemplate.cloneNode(true);
-
+    //var card = similarCardTemplate.cloneNode(true);
     card.querySelector('.popup__title').textContent = adv.offer.title;
     card.querySelector('.popup__text--address').textContent = adv.offer.address;
     card.querySelector('.popup__text--price').innerHTML = adv.offer.price + '&#x20bd' + '<span>/ночь</span>';
@@ -38,7 +38,7 @@
     var photos = card.querySelector('.popup__photos');
     var fragmentPhotos = document.createDocumentFragment();
 
-    for (var j = 0; i < adv.offer.photos.length; j++) {
+    for (var j = 0; j < adv.offer.photos.length; j++) {
       var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
       photoElement.src = adv.offer.photos[j];
       fragmentPhotos.appendChild(photoElement);
@@ -46,28 +46,29 @@
     removeFirstChild(photos);
     photos.appendChild(fragmentPhotos);
 
-    return card;
+    window.elements.mapPinsContainer.after(card);
   };
 
-  var renderCard = function () {
-    var pinListener = function (evt) {
-      if (
-        evt.target
-        && evt.target.matches('.map__pin:not(.map__pin--main)')
-      ) {
-        var oldCard = window.elements.map.querySelector('.map__card');
-        if (oldCard) {
-          oldCard.remove();
-        }
-        window.elements.mapPinsContainer.after(createCard(window.pin.advList[window.util.getRandom(1, 6)]));
-      }
-    };
-    window.elements.mapPinsContainer.addEventListener('click', pinListener);
+  var getIndex = function (elem, list) {
+    return [].slice.call(list).indexOf(elem);
   };
 
-  renderCard();
+  var pinHandler = function (evt) {
+    var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (evt.target.classList.value === 'map__pin') {
+      var index = getIndex(evt.target, advPins);
+      createCard(window.pin.advList[index]);
+    }
+    if (evt.target.parentElement.classList.value === 'map__pin') {
+      index = getIndex(evt.target.parentElement, advPins);
+      createCard(window.pin.advList[index]);
+    }
+  };
+
+  window.elements.mapPinsContainer.addEventListener('click', pinHandler);
+
   window.card = {
     createCard: createCard,
-    renderCard: renderCard
+    pinHandler: pinHandler
   };
 })();
