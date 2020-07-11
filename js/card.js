@@ -39,7 +39,6 @@
       photos.style.display = 'none';
     } else {
       var fragmentPhotos = document.createDocumentFragment();
-
       for (var j = 0; j < adv.offer.photos.length; j++) {
         var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
         photoElement.src = adv.offer.photos[j];
@@ -60,11 +59,9 @@
     } else if (evt.target.parentElement.classList.value === 'map__pin') {
       target = evt.target.parentElement;
     }
-
     if (target) {
       renderCard(window.data.pins[[].slice.call(advPins).indexOf(target)]);
     }
-
     window.elements.map.addEventListener('click', onCardClick);
   };
 
