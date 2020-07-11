@@ -63,6 +63,7 @@
       renderCard(window.data.pins[[].slice.call(advPins).indexOf(target)]);
     }
     window.elements.map.addEventListener('click', onCardClick);
+    document.addEventListener('keydown', onCardPress);
   };
 
   window.elements.map.addEventListener('click', pinHandler);
@@ -71,7 +72,15 @@
     var mapCard = window.elements.map.querySelector('.map__card');
     if (evt.target.classList.contains('popup__close')) {
       mapCard.remove();
-      window.elements.map.removeEventListener('click', onCardClick);
+      document.removeEventListener('click', onCardClick);
+    }
+  };
+
+  var onCardPress = function (evt) {
+    if (evt.keyCode === 27) {
+      var mapCard = window.elements.map.querySelector('.map__card');
+      mapCard.remove();
+      document.removeEventListener('keydown', onCardPress);
     }
   };
 
