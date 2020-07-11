@@ -2,17 +2,9 @@
 
 (function () {
 
-  window.elements.mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
-      window.map.setPageStatus(true);
-    }
-  });
-
   window.elements.mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
       evt.preventDefault();
-
-      window.map.setPageStatus(true);
 
       var startCoords = {
         x: evt.clientX,
@@ -73,12 +65,12 @@
 
       var onMouseUp = function (upEvt) {
         upEvt.preventDefault();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+        window.elements.map.removeEventListener('mousemove', onMouseMove);
+        window.elements.map.removeEventListener('mouseup', onMouseUp);
       };
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      window.elements.map.addEventListener('mousemove', onMouseMove);
+      window.elements.map.addEventListener('mouseup', onMouseUp);
     }
   });
 })();

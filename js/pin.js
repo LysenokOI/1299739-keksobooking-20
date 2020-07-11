@@ -30,7 +30,7 @@
     return pin;
   };
 
-  var advList = [];
+  /*var advList = [];
   var renderPins = function () {
     if (advList.length < COUNT_ADS) {
       var fragmentPins = document.createDocumentFragment();
@@ -41,12 +41,17 @@
       }
       window.elements.mapPinsContainer.appendChild(fragmentPins);
     }
+  };*/
+  var renderPins = function () {
+    var fragmentPins = document.createDocumentFragment();
+    window.data.pins.forEach(function (adv) {
+      fragmentPins.appendChild(renderPin(adv));
+    });
+    window.elements.mapPinsContainer.appendChild(fragmentPins);
   };
 
   window.pin = {
     getPinSize: getPinSize,
-    renderPin: renderPin,
-    renderPins: renderPins,
-    advList: advList
+    renderPins: renderPins
   };
 })();

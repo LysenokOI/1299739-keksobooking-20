@@ -2,24 +2,30 @@
 
 (function () {
   var activationForms = [window.elements.mapFilter, window.elements.adForm];
+  activationForms.forEach(function (element) {
+    window.util.setDisableForms(element, true);
+  });
 
-  var setPageStatus = function (status) {
-    if (status && window.elements.map.classList.contains('map--faded')) {
+  var onActivatePage = function (evt) {
+    evt.stopPropagation();
+    if (window.elements.map.classList.contains('map--faded')) {
       window.elements.map.classList.remove('map--faded');
       window.elements.adForm.classList.remove('ad-form--disabled');
       window.pin.renderPins();
+      activationForms.forEach(function (element) {
+        window.util.setDisableForms(element, false);
+      });
+      window.backend.load(
+          function (response) {
+            window.data.pins = response;
+            window.pin.renderPins();
+          }, function (error) {
+            console.log(error);
+          }
+      );
     }
-    activationForms.forEach(function (element) {
-      if (status) {
-        window.util.setDisableForms(element, !status);
-      } else {
-        window.util.setDisableForms(element, !status);
-      }
-    });
   };
 
-  setPageStatus(false);
-  window.map = {
-    setPageStatus: setPageStatus,
-  };
+  window.elements.mapPinMain.addEventListener('click', onActivatePage);
+
 })();
