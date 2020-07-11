@@ -52,21 +52,19 @@
     window.elements.mapPinsContainer.after(card);
   };
 
-  var target = null;
-
   var pinHandler = function (evt) {
     var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var target = null;
     if (evt.target.classList.value === 'map__pin') {
       target = evt.target;
-    }
-    if (evt.target.parentElement.classList.value === 'map__pin') {
+    } else if (evt.target.parentElement.classList.value === 'map__pin') {
       target = evt.target.parentElement;
     }
-    try {
+
+    if (target) {
       renderCard(window.data.pins[[].slice.call(advPins).indexOf(target)]);
-    } catch (error) {
-      console.log('renderCard error');
     }
+
     window.elements.map.addEventListener('click', onCardClick);
   };
 

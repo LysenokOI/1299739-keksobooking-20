@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var COUNT_ADS = 8;
-
   var similarPinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
@@ -30,18 +28,6 @@
     return pin;
   };
 
-  /*var advList = [];
-  var renderPins = function () {
-    if (advList.length < COUNT_ADS) {
-      var fragmentPins = document.createDocumentFragment();
-      for (var i = 1; i <= COUNT_ADS; i++) {
-        var adv = window.data.createAdv(i, window.elements.map);
-        advList.push(adv);
-        fragmentPins.appendChild(window.pin.renderPin(adv));
-      }
-      window.elements.mapPinsContainer.appendChild(fragmentPins);
-    }
-  };*/
   var renderPins = function () {
     var fragmentPins = document.createDocumentFragment();
     window.data.pins.forEach(function (adv) {
