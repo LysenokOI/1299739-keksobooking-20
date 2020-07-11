@@ -4,7 +4,7 @@
   var activationForms = [window.elements.mapFilter, window.elements.adForm];
 
   var setPageStatus = function (status) {
-    if (status) {
+    if (status && window.elements.map.classList.contains('map--faded')) {
       window.elements.map.classList.remove('map--faded');
       window.elements.adForm.classList.remove('ad-form--disabled');
       window.pin.renderPins();

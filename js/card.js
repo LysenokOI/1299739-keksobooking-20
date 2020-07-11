@@ -11,8 +11,7 @@
       container.firstElementChild.remove();
     }
   };
-  var createCard = function (adv) {
-    //var card = similarCardTemplate.cloneNode(true);
+  var renderCard = function (adv) {
     card.querySelector('.popup__title').textContent = adv.offer.title;
     card.querySelector('.popup__text--address').textContent = adv.offer.address;
     card.querySelector('.popup__text--price').innerHTML = adv.offer.price + '&#x20bd' + '<span>/ночь</span>';
@@ -53,22 +52,27 @@
     return [].slice.call(list).indexOf(elem);
   };
 
+  var target = null;
+
   var pinHandler = function (evt) {
     var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
     if (evt.target.classList.value === 'map__pin') {
-      var index = getIndex(evt.target, advPins);
-      createCard(window.pin.advList[index]);
+      target = evt.target;
     }
     if (evt.target.parentElement.classList.value === 'map__pin') {
-      index = getIndex(evt.target.parentElement, advPins);
-      createCard(window.pin.advList[index]);
+      target = evt.target.parentElement;
     }
+    renderCard(window.pin.advList[[].slice.call(advPins).indexOf(target)]);
   };
 
   window.elements.mapPinsContainer.addEventListener('click', pinHandler);
-
+/*
+var cardHandler = function (evt) {
+  var closeCardButton = window.elements.map.querySelector('.popup');
+}
+*/
   window.card = {
-    createCard: createCard,
+    //createCard: renderCard,
     pinHandler: pinHandler
   };
 })();
