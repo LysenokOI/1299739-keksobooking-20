@@ -33,10 +33,10 @@
         };
 
         var checkPinCoords = function () {
-          if (pinMouseCoords().y < window.data.MAP_SIZE_VERT.min) {
-            window.elements.mapPinMain.style.top = window.data.MAP_SIZE_VERT.min + 'px';
+          if (pinMouseCoords().y < window.data.MapSizeVert.MIN) {
+            window.elements.mapPinMain.style.top = window.data.MapSizeVert.MAX + 'px';
           }
-          var lowerMapBoundery = window.data.MAP_SIZE_VERT.max - window.form.mainPinSize.height;
+          var lowerMapBoundery = window.data.MapSizeVert.MAX - window.form.mainPinSize.height;
           if (pinMouseCoords().y > lowerMapBoundery) {
             window.elements.mapPinMain.style.top = lowerMapBoundery + 'px';
 
