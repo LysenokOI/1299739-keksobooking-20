@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var similarCardTemplate = document.querySelector('#card')
+
+  var card = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
@@ -10,13 +11,11 @@
       container.firstElementChild.remove();
     }
   };
-  var createCard = function (adv) {
-    var card = similarCardTemplate.cloneNode(true);
-
+  var renderCard = function (adv) {
     card.querySelector('.popup__title').textContent = adv.offer.title;
     card.querySelector('.popup__text--address').textContent = adv.offer.address;
     card.querySelector('.popup__text--price').innerHTML = adv.offer.price + '&#x20bd' + '<span>/ночь</span>';
-    card.querySelector('.popup__type').textContent = window.data.appartList[adv.offer.type].title;
+    card.querySelector('.popup__type').textContent = adv.offer.title;
     card.querySelector('.popup__text--capacity').textContent = adv.offer.rooms + ' комнаты для ' + adv.offer.guests;
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + adv.offer.checkin + ', выезд до ' + adv.offer.checkout;
     card.querySelector('.popup__description').textContent = adv.offer.description;
@@ -28,7 +27,7 @@
     for (var i = 0; i < adv.offer.features.length; i++) {
       var featureElement = document.createElement('li');
       featureElement.classList.add('popup__feature', 'popup__feature--' + adv.offer.features[i]);
-      featureElement.textContent = window.data.featuresList[i];
+      featureElement.textContent = adv.offer.features[i];
       fragmentFeatures.append(featureElement);
     }
 
@@ -36,38 +35,47 @@
     cardFeatures.append(fragmentFeatures);
 
     var photos = card.querySelector('.popup__photos');
-    var fragmentPhotos = document.createDocumentFragment();
-
-    for (var j = 0; i < adv.offer.photos.length; j++) {
-      var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
-      photoElement.src = adv.offer.photos[j];
-      fragmentPhotos.appendChild(photoElement);
-    }
-    removeFirstChild(photos);
-    photos.appendChild(fragmentPhotos);
-
-    return card;
-  };
-
-  var renderCard = function () {
-    var pinListener = function (evt) {
-      if (
-        evt.target
-        && evt.target.matches('.map__pin:not(.map__pin--main)')
-      ) {
-        var oldCard = window.elements.map.querySelector('.map__card');
-        if (oldCard) {
-          oldCard.remove();
-        }
-        window.elements.mapPinsContainer.after(createCard(window.pin.advList[window.util.getRandom(1, 6)]));
+    if (adv.offer.photos.length === 0) {
+      photos.style.display = 'none';
+    } else {
+      var fragmentPhotos = document.createDocumentFragment();
+      for (var j = 0; j < adv.offer.photos.length; j++) {
+        var photoElement = photos.querySelector('.popup__photo').cloneNode(true);
+        photoElement.src = adv.offer.photos[j];
+        fragmentPhotos.appendChild(photoElement);
       }
-    };
-    window.elements.mapPinsContainer.addEventListener('click', pinListener);
+      removeFirstChild(photos);
+      photos.style.display = 'flex';
+      photos.appendChild(fragmentPhotos);
+    }
+    window.elements.mapPinsContainer.after(card);
   };
 
-  renderCard();
+  var pinHandler = function (evt) {
+    var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var target = null;
+    if (evt.target.classList.value === 'map__pin') {
+      target = evt.target;
+    } else if (evt.target.parentElement.classList.value === 'map__pin') {
+      target = evt.target.parentElement;
+    }
+    if (target) {
+      renderCard(window.data.pins[[].slice.call(advPins).indexOf(target)]);
+    }
+    window.elements.map.addEventListener('click', onCardClick);
+  };
+
+  window.elements.map.addEventListener('click', pinHandler);
+
+  var onCardClick = function (evt) {
+    var mapCard = window.elements.map.querySelector('.map__card');
+    if (evt.target.classList.contains('popup__close')) {
+      mapCard.remove();
+      window.elements.map.removeEventListener('click', onCardClick);
+    }
+  };
+
   window.card = {
-    createCard: createCard,
-    renderCard: renderCard
+    pinHandler: pinHandler
   };
 })();
