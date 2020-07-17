@@ -40,7 +40,6 @@
 
   var updatePins = function () {
     var advPins = findAdvPins();
-    removeNodes(advPins);
     var pinsForRender = window.data.pins;
     var filteredPins;
     if (window.elements.housingType.value === 'any') {
@@ -50,6 +49,7 @@
         return elem.offer.type === window.elements.housingType.value;
       });
     }
+    removeNodes(advPins);
     renderPins(filteredPins);
   };
 
@@ -57,7 +57,11 @@
 
   var renderPins = function (pins) {
     var fragmentPins = document.createDocumentFragment();
-    pins.forEach(function (adv) {
+    var pinsForRender = pins;
+    if (pins.length > 5) {
+      pinsForRender = pins.slice(5);
+    }
+    pinsForRender.forEach(function (adv) {
       fragmentPins.appendChild(createPin(adv));
     });
     window.elements.mapPinsContainer.appendChild(fragmentPins);

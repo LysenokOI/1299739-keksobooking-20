@@ -61,11 +61,11 @@
     document.addEventListener('keydown', onCardPress);
   };
 
-  window.elements.map.addEventListener('click', pinHandler);
-
   var cardRemove = function () {
     var mapCard = window.elements.map.querySelector('.map__card');
-    mapCard.remove();
+    if (mapCard) {
+      mapCard.remove();
+    }
   };
 
   var onCardClick = function (evt) {
@@ -81,6 +81,9 @@
       document.removeEventListener('keydown', onCardPress);
     }
   };
+
+  window.elements.map.addEventListener('click', pinHandler);
+  window.elements.mapFilter.addEventListener('change', cardRemove);
 
   window.card = {
     pinHandler: pinHandler
