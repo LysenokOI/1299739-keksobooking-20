@@ -6,11 +6,6 @@
     .content
     .querySelector('.map__card');
 
-  var removeFirstChild = function (container) {
-    while (container.firstElementChild) {
-      container.firstElementChild.remove();
-    }
-  };
   var renderCard = function (adv) {
     card.querySelector('.popup__title').textContent = adv.offer.title;
     card.querySelector('.popup__text--address').textContent = adv.offer.address;
@@ -31,7 +26,7 @@
       fragmentFeatures.append(featureElement);
     }
 
-    removeFirstChild(cardFeatures);
+    window.util.removeFirstChild(cardFeatures);
     cardFeatures.append(fragmentFeatures);
 
     var photos = card.querySelector('.popup__photos');
@@ -44,7 +39,7 @@
         photoElement.src = adv.offer.photos[j];
         fragmentPhotos.appendChild(photoElement);
       }
-      removeFirstChild(photos);
+      window.util.removeFirstChild(photos);
       photos.style.display = 'flex';
       photos.appendChild(fragmentPhotos);
     }
@@ -52,7 +47,7 @@
   };
 
   var pinHandler = function (evt) {
-    var advPins = window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var advPins = window.pin.findAdvPins();
     var target = null;
     if (evt.target.classList.value === 'map__pin') {
       target = evt.target;
@@ -60,20 +55,35 @@
       target = evt.target.parentElement;
     }
     if (target) {
-      renderCard(window.data.pins[[].slice.call(advPins).indexOf(target)]);
+      renderCard(window.data.pins[Array.from(advPins).indexOf(target)]);
     }
     window.elements.map.addEventListener('click', onCardClick);
+    document.addEventListener('keydown', onCardPress);
+  };
+
+  var cardRemove = function () {
+    var mapCard = window.elements.map.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  var onCardClick = function (evt) {
+    if (evt.target.classList.contains('popup__close')) {
+      cardRemove();
+      document.removeEventListener('click', onCardClick);
+    }
+  };
+
+  var onCardPress = function (evt) {
+    if (evt.keyCode === 27) {
+      cardRemove();
+      document.removeEventListener('keydown', onCardPress);
+    }
   };
 
   window.elements.map.addEventListener('click', pinHandler);
-
-  var onCardClick = function (evt) {
-    var mapCard = window.elements.map.querySelector('.map__card');
-    if (evt.target.classList.contains('popup__close')) {
-      mapCard.remove();
-      window.elements.map.removeEventListener('click', onCardClick);
-    }
-  };
+  window.elements.mapFilter.addEventListener('change', cardRemove);
 
   window.card = {
     pinHandler: pinHandler

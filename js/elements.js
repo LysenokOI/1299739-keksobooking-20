@@ -16,6 +16,7 @@
   var avatarInput = adForm.querySelector('#avatar');
   var photosInput = adForm.querySelector('#images');
   var mapPinsContainer = map.querySelector('.map__pins');
+  var housingType = mapFilter.querySelector('#housing-type');
 
   window.elements = {
     map: map,
@@ -32,6 +33,7 @@
     checkoutInput: checkoutInput,
     avatarInput: avatarInput,
     photosInput: photosInput,
-    mapPinsContainer: mapPinsContainer
+    mapPinsContainer: mapPinsContainer,
+    housingType: housingType
   };
 })();

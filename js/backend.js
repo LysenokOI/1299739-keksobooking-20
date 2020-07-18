@@ -2,8 +2,12 @@
 
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking/data';
-  var SUCCSESS__CODE = 200;
   var MAX__EXPECTATION = 10000;
+
+  var Code = {
+    SUCCSESS: 200,
+    NOT_FOUND_ERROR: 404
+  };
 
   var load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -11,7 +15,7 @@
     xhr.timeout = MAX__EXPECTATION;
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === SUCCSESS__CODE) {
+      if (xhr.status === Code.SUCCSESS) {
         onSuccess(xhr.response);
       } else {
         onError('Server answer: ' + xhr.status + ' ' + xhr.statusText);

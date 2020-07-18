@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  var MAP_SIZE_VERT = {
-    min: 130,
-    max: 630
+  var MapSizeVert = {
+    MIN: 130,
+    MAX: 630
   };
   var pins = [];
   var appartList = {
@@ -26,7 +26,7 @@
   };
 
   window.data = {
-    MAP_SIZE_VERT: MAP_SIZE_VERT,
+    MapSizeVert: MapSizeVert,
     appartList: appartList,
     pins: pins
   };
