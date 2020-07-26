@@ -24,7 +24,6 @@
   var onError = function (error) {
     window.dialog.openErrorDialog(error);
   };
-
   mainPinElement.addEventListener('mousedown', onActivatePage);
   window.form.disableForms();
   window.form.setAddress(mainPinElement.offsetLeft, mainPinElement.offsetTop, true);
