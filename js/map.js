@@ -1,25 +1,26 @@
 'use strict';
 
 (function () {
-  var activationForms = [window.elements.mapFilter, window.elements.adForm];
+  var mapElement = document.querySelector('.map');
+  var target = null;
 
-  var setPageStatus = function (status) {
-    if (status) {
-      window.elements.map.classList.remove('map--faded');
-      window.elements.adForm.classList.remove('ad-form--disabled');
-      window.pin.renderPins();
+  var onClickMap = function (e) {
+    if (e.target.classList.contains('map__pin') &&
+      !e.target.classList.contains('map__pin--main')) {
+      target = e.target;
+    } else if (e.target.parentElement.classList.contains('map__pin') &&
+      !e.target.parentElement.classList.contains('map__pin--main')) {
+      target = e.target.parentElement;
+    } else {
+      target = null;
     }
-    activationForms.forEach(function (element) {
-      if (status) {
-        window.util.setDisableForms(element, !status);
-      } else {
-        window.util.setDisableForms(element, !status);
-      }
-    });
-  };
 
-  setPageStatus(false);
-  window.map = {
-    setPageStatus: setPageStatus
+    if (target) {
+      var pinsCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var index = [].slice.call(pinsCollection).indexOf(target);
+      window.card.renderCard(window.data.filtered[index]);
+      pinsCollection[index].classList.add('map__pin--active');
+    }
   };
+  mapElement.addEventListener('click', onClickMap);
 })();
