@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var mainPinElement = document.querySelector('.map__pin--main');
   var MAP_OFFSET_LEFT = 0 - Math.floor(window.pin.mainPinWidth / 2);
@@ -33,7 +33,7 @@
         mainPinElement.style.top = (mainPinElement.offsetTop - shift.y) + 'px';
       }
 
-      window.form.setAddress(mainPinElement.offsetLeft, mainPinElement.offsetTop);
+      window.form.setAddress(mainPinElement.offsetLeft, mainPinElement.offsetTop, false);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();

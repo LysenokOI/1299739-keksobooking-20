@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var mapElement = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
@@ -51,8 +51,14 @@
     enableForm(filterForm);
   };
 
-  var setAddress = function (x, y) {
-    addressInput.value = Math.floor(x + window.pin.mainPinWidth / 2) + ', ' + Math.floor(y + window.pin.mainPinHeight);
+  var setAddress = function (x, y, status) {
+    var height;
+    if (status === true) {
+      height = window.pin.mainPinWidth / 2;
+    } else if (status === false) {
+      height = window.pin.mainPinHeight;
+    }
+    addressInput.value = Math.floor(x + window.pin.mainPinWidth / 2) + ', ' + Math.floor(y + height);
   };
 
   var validateTypePrice = function () {

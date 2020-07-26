@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var mapElement = document.querySelector('.map');
   var target = null;
 
