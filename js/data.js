@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   window.data = {
     pins: [],
     filtered: [],

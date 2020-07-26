@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var errorTemplate = document.querySelector('#error')
     .content.querySelector('.error');
   var successTemplate = document.querySelector('#success')
@@ -18,7 +18,7 @@
     document.addEventListener('keydown', closeErrorDialogByEsc);
   };
 
-  var closeErrorDialog = function (e) {
+  var closeErrorDialog = function () {
     errorDialog.remove();
     errorDialogBtn.removeEventListener('click', closeErrorDialog);
     errorDialog.removeEventListener('click', closeErrorDialogByClick);
@@ -27,13 +27,13 @@
 
   var closeErrorDialogByClick = function (e) {
     if (e.target.classList.contains('error')) {
-      closeErrorDialog(e);
+      closeErrorDialog();
     }
   };
 
   var closeErrorDialogByEsc = function (e) {
     if (e.key === 'Escape') {
-      closeErrorDialog(e);
+      closeErrorDialog();
     }
   };
 

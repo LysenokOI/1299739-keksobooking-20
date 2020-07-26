@@ -54,13 +54,13 @@
     window.pin.removeActive();
   };
 
-  var closeCardByEsc = function(e) {
+  var closeCardByEsc = function (e) {
     if (e.key === 'Escape') {
       closeCard();
     }
   };
 
-  var closeCard = function() {
+  var closeCard = function () {
     cardElement.remove();
     window.pin.removeActive();
     cardCloseButton.removeEventListener('click', closeCard);

@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var selectHousingType = document.querySelector('#housing-type');
   var selectHousingPrice = document.querySelector('#housing-price');
@@ -38,7 +38,7 @@
         }
       });
 
-      var filterFeatures = function() {
+      var filterFeatures = function () {
         var filter = true;
         for (var i = 0; i < features.length; i++) {
           if (ad.offer.features.indexOf(features[i]) === -1) {

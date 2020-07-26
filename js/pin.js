@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 87;
   var PIN_WIDTH = 50;
@@ -37,7 +37,7 @@
     });
   };
 
-  var removeActive = function() {
+  var removeActive = function () {
     var pinsCollection = document.querySelectorAll('.map__pin');
     pinsCollection.forEach(function (pin) {
       pin.classList.remove('map__pin--active');

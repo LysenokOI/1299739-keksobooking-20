@@ -122,7 +122,7 @@
   selectCapacityElement.addEventListener('change', validateRoomCapacity);
   selectRoomElement.addEventListener('change', validateRoomCapacity);
 
-  submitButton.addEventListener('click', function (e) {
+  submitButton.addEventListener('click', function () {
     markInvalidFields();
   });
 
