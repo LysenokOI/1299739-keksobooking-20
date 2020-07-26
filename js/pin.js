@@ -1,75 +1,62 @@
 'use strict';
 
-(function () {
-  var similarPinTemplate = document.querySelector('#pin')
-    .content
-    .querySelector('.map__pin');
+(function() {
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 87;
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
+  var MAIN_PIN_POS_X = 570;
+  var MAIN_PIN_POS_Y = 375;
+  var MIN_PINS = 0;
+  var MAX_PINS = 5;
+  var mapPinsElement = document.querySelector('.map__pins');
+  var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
+  var mainPinElement = document.querySelector('.map__pin--main');
 
-  var getAfterHeight = function (elem) {
-    var afterElem = window.getComputedStyle(elem, ':after');
-    return Number(afterElem.height.split('px', 1));
-  };
-
-  var getPinSize = function (elem) {
-    return {
-      width: elem.getBoundingClientRect().width,
-      centerX: elem.getBoundingClientRect().width / 2,
-      height: elem.getBoundingClientRect().height + getAfterHeight(elem)
-    };
-  };
-
-  var createPin = function (adv) {
-    var pin = similarPinTemplate.cloneNode(true);
-    var img = pin.querySelector('img');
-    pin.style.left = adv.location.x + img.getAttribute('width') / 2 + 'px';
-    pin.style.top = adv.location.y - img.getAttribute('height') + 'px';
-    img.src = adv.author.avatar;
-    img.alt = adv.offer.title;
+  var createPin = function (ad) {
+    var pin = pinElement.cloneNode(true);
+    pin.querySelector('img').src = ad.author.avatar;
+    pin.querySelector('img').alt = ad.offer.title;
+    pin.style.left = ad.location.x - PIN_WIDTH / 2 + 'px';
+    pin.style.top = ad.location.y - PIN_HEIGHT + 'px';
     return pin;
   };
 
-  var findAdvPins = function () {
-    return window.elements.mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+  var renderPins = function (data) {
+    var pinsFragment = new DocumentFragment();
+    data.slice(MIN_PINS, MAX_PINS).forEach(function (ad) {
+      pinsFragment.appendChild(createPin(ad));
+    });
+    mapPinsElement.appendChild(pinsFragment);
   };
 
-  var removeNodes = function (collection) {
-    Array.from(collection).forEach(function (node) {
-      node.remove();
+  var removePins = function () {
+    var pinsCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pinsCollection.forEach(function (item) {
+      item.remove();
     });
   };
 
-  var updatePins = function () {
-    var advPins = findAdvPins();
-    var pinsForRender = window.data.pins;
-    var filteredPins;
-    if (window.elements.housingType.value === 'any') {
-      filteredPins = pinsForRender;
-    } else {
-      filteredPins = pinsForRender.filter(function (elem) {
-        return elem.offer.type === window.elements.housingType.value;
-      });
-    }
-    removeNodes(advPins);
-    renderPins(filteredPins);
-  };
-
-  window.elements.mapFilter.addEventListener('change', updatePins);
-
-  var renderPins = function (pins) {
-    var fragmentPins = document.createDocumentFragment();
-    var pinsForRender = pins;
-    if (pins.length > 5) {
-      pinsForRender = pins.slice(5);
-    }
-    pinsForRender.forEach(function (adv) {
-      fragmentPins.appendChild(createPin(adv));
+  var removeActive = function() {
+    var pinsCollection = document.querySelectorAll('.map__pin');
+    pinsCollection.forEach(function (pin) {
+      pin.classList.remove('map__pin--active');
     });
-    window.elements.mapPinsContainer.appendChild(fragmentPins);
   };
+
+  var setDefaultMainPinPosition = function () {
+    mainPinElement.style.left = MAIN_PIN_POS_X + 'px';
+    mainPinElement.style.top = MAIN_PIN_POS_Y + 'px';
+    window.form.setAddress(MAIN_PIN_POS_X, MAIN_PIN_POS_Y);
+  };
+
 
   window.pin = {
-    getPinSize: getPinSize,
     renderPins: renderPins,
-    findAdvPins: findAdvPins
+    removePins: removePins,
+    removeActive: removeActive,
+    setDefaultMainPinPosition: setDefaultMainPinPosition,
+    mainPinWidth: MAIN_PIN_WIDTH,
+    mainPinHeight: MAIN_PIN_HEIGHT,
   };
 })();
