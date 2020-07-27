@@ -52,7 +52,10 @@
       return filterType && filterGuests && filterPrice && filterRooms && filterFeatures();
     });
     window.pin.removePins();
-    window.pin.renderPins(window.data.filtered);
+
+    window.debounce(function () {
+      window.pin.renderPins(window.data.filtered);
+    });
   };
 
   inputFeaturesCollection.forEach(function (checkbox) {

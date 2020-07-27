@@ -2,11 +2,11 @@
 
 (function () {
 
-  var mainPinElement = document.querySelector('.map__pin--main');
-  var MAP_OFFSET_LEFT = 0 - Math.floor(window.pin.mainPinWidth / 2);
+  var MAP_OFFSET_LEFT = -Math.floor(window.pin.mainPinWidth / 2);
   var MAP_OFFSET_RIGHT = 1200 - Math.floor(window.pin.mainPinWidth / 2);
   var MAP_OFFSET_TOP = 130 - window.pin.mainPinHeight;
   var MAP_OFFSET_BOTTOM = 630 - window.pin.mainPinHeight;
+  var mainPinElement = document.querySelector('.map__pin--main');
 
   var onMoveListener = function (e) {
     var startCoords = {

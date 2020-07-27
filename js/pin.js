@@ -47,7 +47,7 @@
   var setDefaultMainPinPosition = function () {
     mainPinElement.style.left = MAIN_PIN_POS_X + 'px';
     mainPinElement.style.top = MAIN_PIN_POS_Y + 'px';
-    window.form.setAddress(MAIN_PIN_POS_X, MAIN_PIN_POS_Y);
+    window.form.setAddress(MAIN_PIN_POS_X, MAIN_PIN_POS_Y, true);
   };
 
 

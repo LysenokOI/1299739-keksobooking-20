@@ -2,6 +2,8 @@
 
 (function () {
 
+  var ERROR_OUTLINE = '2px solid #ff6547';
+  var ERROR_NONE = 'none';
   var mapElement = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var resetButton = document.querySelector('.ad-form__reset');
@@ -15,8 +17,6 @@
   var selectCapacityElement = document.querySelector('#capacity');
   var selectTimeInElement = document.querySelector('#timein');
   var selectTimeOutElement = document.querySelector('#timeout');
-  var ERROR_OUTLINE = '2px solid #ff6547';
-  var ERROR_NONE = 'none';
   var typePrice = {
     bungalo: 0,
     flat: 1000,
