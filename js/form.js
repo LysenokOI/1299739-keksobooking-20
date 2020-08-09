@@ -72,7 +72,6 @@
   window.elements.adAddressInput.readOnly = true;
   setAddressInputValue(window.elements.adAddressInput, mainPinCoords);
 
-  window.elements.adForm.action = 'https://javascript.pages.academy/keksobooking';
 
   titleCheck(window.elements.titleInput);
   priceInputCheck(window.elements.priceInput);
@@ -83,6 +82,13 @@
   window.elements.avatarInput.accept = '.jpg, .jpeg, .png';
   window.elements.photosInput.multiple = true;
   window.elements.photosInput.accept = '.jpg, .jpeg, .png';
+
+  window.elements.adForm.addEventListener('submit', function (e) {
+    window.backend.upload(new FormData(window.elements.adForm), function (response) {
+      console.log('успешно отправлено');
+    });
+    e.preventDefault();
+  });
 
   window.form = {
     setAddressInputValue: setAddressInputValue,

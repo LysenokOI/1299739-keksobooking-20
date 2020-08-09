@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking/data';
+  var URL = 'https://javascript.pages.academy/keksobooking';
   var MAX__EXPECTATION = 10000;
 
   var Code = {
@@ -28,11 +28,24 @@
       });
     });
 
-    xhr.open('GET', URL);
+    xhr.open('GET', URL + '/data');
     xhr.send();
   };
 
+  var upload = function (data, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      onSuccess(xhr.response);
+    });
+
+    xhr.open('POST', URL);
+    xhr.send(data);
+  };
+
   window.backend = {
-    load: load
+    load: load,
+    upload: upload
   };
 })();
