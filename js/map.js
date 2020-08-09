@@ -1,26 +1,36 @@
 'use strict';
 
 (function () {
-  var mapElement = document.querySelector('.map');
-  var target = null;
+  var activationForms = [window.elements.mapFilter, window.elements.adForm];
+  activationForms.forEach(function (element) {
+    window.util.setDisableForms(element, true);
+  });
 
-  var onClickMap = function (e) {
-    if (e.target.classList.contains('map__pin') &&
-      !e.target.classList.contains('map__pin--main')) {
-      target = e.target;
-    } else if (e.target.parentElement.classList.contains('map__pin') &&
-      !e.target.parentElement.classList.contains('map__pin--main')) {
-      target = e.target.parentElement;
-    } else {
-      target = null;
-    }
-
-    if (target) {
-      var pinsCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      var index = [].slice.call(pinsCollection).indexOf(target);
-      window.card.renderCard(window.data.filtered[index]);
-      pinsCollection[index].classList.add('map__pin--active');
+  var onActivatePage = function (evt) {
+    evt.stopPropagation();
+    if (window.elements.map.classList.contains('map--faded')) {
+      window.elements.map.classList.remove('map--faded');
+      window.elements.adForm.classList.remove('ad-form--disabled');
+      window.util.setDisableForms(window.elements.adForm, false);
+      window.backend.load(
+          function (response) {
+            window.data.pins = response;
+            window.pin.renderPins(window.data.pins);
+            window.util.setDisableForms(window.elements.mapFilter, false);
+          }, function (error) {
+            var node = document.createElement('div');
+            node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+            node.style.position = 'absolute';
+            node.style.left = 0;
+            node.style.right = 0;
+            node.style.fontSize = '30px';
+            node.textContent = error;
+            document.body.insertAdjacentElement('afterbegin', node);
+          }
+      );
     }
   };
-  mapElement.addEventListener('click', onClickMap);
+
+  window.elements.mapPinMain.addEventListener('click', onActivatePage);
+
 })();
