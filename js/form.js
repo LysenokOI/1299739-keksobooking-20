@@ -83,12 +83,14 @@
   window.elements.photosInput.multiple = true;
   window.elements.photosInput.accept = '.jpg, .jpeg, .png';
 
-  window.elements.adForm.addEventListener('submit', function (e) {
+  var submitHandler = function (e) {
     window.backend.upload(new FormData(window.elements.adForm), function (response) {
-      console.log('успешно отправлено');
+      alert('Успешно отправлено');
     });
     e.preventDefault();
-  });
+  };
+
+  window.elements.adForm.addEventListener('submit', submitHandler);
 
   window.form = {
     setAddressInputValue: setAddressInputValue,
